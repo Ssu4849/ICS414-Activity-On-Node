@@ -88,6 +88,15 @@ public class Project {
 		}
 		activities.remove(activity);
 	}
+	
+	/**
+	 * Marks every activity in the Project as unvisited.
+	 */
+	private void markAllAsUnvisited() {
+		for (ActivityNode act : activities) {
+			act.setVisited(false);
+		}
+	}
 
 //	/**
 //	 * Adds an activity to the activity table and updates the AON network
