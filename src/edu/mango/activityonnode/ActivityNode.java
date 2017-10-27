@@ -42,7 +42,7 @@ public class ActivityNode {
 	 * @return the duration of the activity
 	 */
 	public int getDuration() {
-		return this.duration;
+		return duration;
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class ActivityNode {
 	 * @return the name of the activity
 	 */
 	public String getActivityName() {
-		return this.name;
+		return name;
 	}
 
 	/**
