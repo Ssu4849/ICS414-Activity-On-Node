@@ -86,6 +86,24 @@ public class ActivityNode {
 	}
 
 	/**
+	 * Adds a activity to the list of children.
+	 * @param child - the activity to add to the list of children
+	 */
+	public void addChild(ActivityNode child) {
+		if (this != child) {
+			children.add(child);
+		}
+	}
+
+	/**
+	 * Removes an activity from the list of children.
+	 * @param child - the activity to remove from the list of children
+	 */
+	public void deleteChild(ActivityNode child) {
+		children.remove(child);
+	}
+
+	/**
 	 * Checks whether the activity has been visited.
 	 * @return true if the activity has been visited, otherwise returns false
 	 */
