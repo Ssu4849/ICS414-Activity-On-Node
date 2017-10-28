@@ -3,7 +3,6 @@ package edu.mango.activityonnode;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * The Project is a representation of all activities that make up an
@@ -101,8 +100,8 @@ public class Project {
 	 * Gets a topological sorting of the activity-on-node network.
 	 * @return a list containing the activity-on-node, topologically sorted.
 	 */
-	public List<ActivityNode> getTopologicalSort() {
-		List<ActivityNode> sortedNetwork = new LinkedList<>();
+	public LinkedList<ActivityNode> getTopologicalSort() {
+		LinkedList<ActivityNode> sortedNetwork = new LinkedList<>();
 		markActivitiesAsUnvisited();
 		for (ActivityNode activity : activities) {
 			if (!activity.isVisited()) {
@@ -122,7 +121,7 @@ public class Project {
 	 * @param activity - the activity to visit
 	 * @param list - the sorted activity-on-node network
 	 */
-	private void visitActivityNode(ActivityNode activity, List<ActivityNode> list) {
+	private void visitActivityNode(ActivityNode activity, LinkedList<ActivityNode> list) {
 		activity.setVisited(true);
 		Set<ActivityNode> childNodes = activity.getChildren();
 		for (ActivityNode child : childNodes) {
@@ -130,7 +129,7 @@ public class Project {
 				visitActivityNode(child, list);
 			}
 		}
-		list.add(0, activity);
+		list.addFirst(activity);
 	}
 
 //	/**
