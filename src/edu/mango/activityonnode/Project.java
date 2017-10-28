@@ -81,10 +81,7 @@ public class Project {
 		// Go through the children of every node in the project and remove
 		// the activity to delete, if it exists
 		for (ActivityNode act : activities) {
-			Set<ActivityNode> children = act.getChildren();
-			if (children.contains(activity)) {
-				children.remove(activity);
-			}
+			act.deleteChild(activity);
 		}
 		activities.remove(activity);
 	}
