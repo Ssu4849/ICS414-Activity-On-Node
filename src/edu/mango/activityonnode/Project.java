@@ -224,7 +224,7 @@ public class Project {
 			activity.setEarliestFinishTime(calculatedEst + duration);
 			activity.setLatestStartTime(calculatedLst + 1);
 			activity.setLatestFinishTime(calculatedLst + duration);
-			activity.setSlackTime(calculatedEst - calculatedLst);
+			activity.setSlackTime(calculatedLst - calculatedEst);
 		}
 	}
 
