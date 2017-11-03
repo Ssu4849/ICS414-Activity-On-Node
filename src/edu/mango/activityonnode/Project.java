@@ -166,7 +166,7 @@ public class Project {
 		// Recalculates the actual earliest/latest start and finish times and slack times
 		finalizeAllTimes();
 
-		List<ActivityNode> criticalPath = findCriticalPath(start, end);
+		List<ActivityNode> criticalPath = findCriticalPath();
 		removeEndActivity(end);
 		return criticalPath;
 	}
@@ -342,33 +342,22 @@ public class Project {
 	}
 
 	/**
-	 * Traverses through the network and finds the activities on the critical path.
-	 * @param start - the start node
-	 * @param end - the end node
+	 * Finds the activities on the critical path.
 	 * @return a list containing the activities on the critical path
 	 */
-	private List<ActivityNode> findCriticalPath(ActivityNode start, ActivityNode end) {
+	private List<ActivityNode> findCriticalPath() {
 		List<ActivityNode> path = new ArrayList<>();
-		ArrayDeque<ActivityNode> queue = new ArrayDeque<>();
-		queue.add(start);
-		while (!queue.isEmpty()) {
-			ActivityNode current = queue.poll();
-			if (current.getSlackTime() == 0 &&
-					current != end &&
-					current != start &&
-					!path.contains(current)) {
-				path.add(current);
+		for (ActivityNode activity : activities) {
+			if (activity.getSlackTime() == 0) {
+				path.add(activity);
 			}
-			Set<ActivityNode> children = current.getChildren();
-			queue.addAll(children);
 		}
-		// Traversal through the network does not necessarily find the critical path in order, so sort the activities
 		path.sort(new Comparator<ActivityNode>() {
 			/**
 			 * Compares the earliest start time of two activities.
 			 * @param first - the first node to compare
 			 * @param second - the second node to compare
-			 * @return 1 if the first node's start time is greater, -1 is the second node's start time is greater, or 0
+			 * @return 1 if the first node's start time is greater, -1 if the second node's start time is greater, or 0
 			 * if both start times are equal.
 			 */
 			@Override
