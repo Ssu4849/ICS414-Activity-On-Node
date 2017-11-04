@@ -166,7 +166,11 @@ public class Project {
 		// Recalculates the actual earliest/latest start and finish times and slack times
 		finalizeAllTimes();
 
+<<<<<<< HEAD
+		List<ActivityNode> criticalPath = findCriticalPath(start, end);
+=======
 		List<ActivityNode> criticalPath = findCriticalPath();
+>>>>>>> master
 		removeEndActivity(end);
 		return criticalPath;
 	}
@@ -240,6 +244,131 @@ public class Project {
 			activity.setSlackTime(0);
 		}
 	}
+<<<<<<< HEAD
+
+	/**
+	 * Adds a start activity, whose purpose is to act as the temporary, single source node for the entire network.
+	 * @param start - the start activity
+	 */
+	private void addStartActivity(ActivityNode start) {
+		List<ActivityNode> startingActivities = getStartingActivities();
+		for (ActivityNode activity : startingActivities) {
+			start.addChild(activity);
+		}
+	}
+
+	/**
+	 * Adds an end activity, whose purpose is to act as the temporary, single sink node for the entire network.
+	 * @param end - the end activity
+	 */
+	private void addEndActivity(ActivityNode end) {
+		for (ActivityNode activity : activities) {
+			if (activity.getChildren().size() == 0) {
+				activity.getChildren().add(end);
+			}
+		}
+	}
+
+	/**
+	 * Gets the set of the starting activities.
+	 * @return the set of starting activities
+	 */
+	private List<ActivityNode> getStartingActivities() {
+		List<ActivityNode> startingActivities = new ArrayList<>();
+		for (ActivityNode activity : activities) {
+			List<ActivityNode> parents = getParentActivities(activity);
+			if (parents.isEmpty()) {
+				startingActivities.add(activity);
+			}
+		}
+		return startingActivities;
+	}
+
+	/**
+	 * Gets the parents of an activity.
+	 * @param activity - the activity to check
+	 * @return a list containing the parents of an activity
+	 */
+	private List<ActivityNode> getParentActivities(ActivityNode activity) {
+		List<ActivityNode> predecessors = new ArrayList<>();
+		for (ActivityNode a : activities) {
+			if (a.getChildren().contains(activity)) {
+				predecessors.add(a);
+			}
+		}
+		return predecessors;
+	}
+
+	/**
+	 * Calculates the earliest start time for an activity.
+	 * @param parents - the parents of an activity
+	 * @return the earliest start time of an activity
+	 */
+	private int calculateEarliestStartTime(List<ActivityNode> parents) {
+		int time = Integer.MIN_VALUE;
+		// Special case for the start node since it has no parent activities
+		if (parents.isEmpty()) {
+			return 0;
+		}
+		for (ActivityNode parent : parents) {
+			int possibleTime = parent.getEarliestStartTime() + parent.getDuration();
+			if (possibleTime > time) {
+				time = possibleTime;
+			}
+		}
+		return time;
+	}
+
+	/**
+	 * Calculates the latest start time for an activity.
+	 * @param current - the activity that is being looked at
+	 * @param children - the child activities of the current node
+	 * @return the latest start time of the current activity
+	 */
+	private int calculateLatestStartTime(ActivityNode current, Set<ActivityNode> children) {
+		int time = Integer.MAX_VALUE;
+		for (ActivityNode child : children) {
+			int possibleTime = child.getLatestStartTime() - current.getDuration();
+			if (possibleTime < time) {
+				time = possibleTime;
+			}
+		}
+		return time;
+	}
+
+	/**
+	 * Removes the end activity.
+	 * @param end - the end activity
+	 */
+	private void removeEndActivity(ActivityNode end) {
+		for (ActivityNode activity : activities) {
+			activity.deleteChild(end);
+		}
+	}
+
+	/**
+	 * Traverses through the network and finds the activities on the critical path.
+	 * @param start - the start node
+	 * @param end - the end node
+	 * @return a list containing the activities on the critical path
+	 */
+	private List<ActivityNode> findCriticalPath(ActivityNode start, ActivityNode end) {
+		List<ActivityNode> path = new ArrayList<>();
+		ArrayDeque<ActivityNode> queue = new ArrayDeque<>();
+		queue.add(start);
+		while (!queue.isEmpty()) {
+			ActivityNode current = queue.poll();
+			if (current.getSlackTime() == 0 &&
+					current != end &&
+					current != start &&
+					!path.contains(current)) {
+				path.add(current);
+			}
+			Set<ActivityNode> children = current.getChildren();
+			queue.addAll(children);
+		}
+		// Traversal through the network does not necessarily find the critical path in order, so sort the activities
+=======
 
 	/**
 	 * Adds a start activity, whose purpose is to act as the temporary, single source node for the entire network.
@@ -352,12 +481,17 @@ public class Project {
 				path.add(activity);
 			}
 		}
+>>>>>>> master
 		path.sort(new Comparator<ActivityNode>() {
 			/**
 			 * Compares the earliest start time of two activities.
 			 * @param first - the first node to compare
 			 * @param second - the second node to compare
+<<<<<<< HEAD
+			 * @return 1 if the first node's start time is greater, -1 is the second node's start time is greater, or 0
+=======
 			 * @return 1 if the first node's start time is greater, -1 if the second node's start time is greater, or 0
+>>>>>>> master
 			 * if both start times are equal.
 			 */
 			@Override
