@@ -244,7 +244,6 @@ public class Project {
 			activity.setSlackTime(0);
 		}
 	}
-<<<<<<< HEAD
 
 	/**
 	 * Adds a start activity, whose purpose is to act as the temporary, single source node for the entire network.
@@ -367,8 +366,7 @@ public class Project {
 			Set<ActivityNode> children = current.getChildren();
 			queue.addAll(children);
 		}
-		// Traversal through the network does not necessarily find the critical path in order, so sort the activities
-=======
+		// Traversal through the network does not necessarily find the critical path in order, so sort the activitie\
 
 	/**
 	 * Adds a start activity, whose purpose is to act as the temporary, single source node for the entire network.
@@ -481,17 +479,15 @@ public class Project {
 				path.add(activity);
 			}
 		}
->>>>>>> master
 		path.sort(new Comparator<ActivityNode>() {
 			/**
 			 * Compares the earliest start time of two activities.
 			 * @param first - the first node to compare
 			 * @param second - the second node to compare
-<<<<<<< HEAD
+
 			 * @return 1 if the first node's start time is greater, -1 is the second node's start time is greater, or 0
-=======
+
 			 * @return 1 if the first node's start time is greater, -1 if the second node's start time is greater, or 0
->>>>>>> master
 			 * if both start times are equal.
 			 */
 			@Override
