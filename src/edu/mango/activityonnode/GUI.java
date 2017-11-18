@@ -1,113 +1,215 @@
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.wb.swt.SWTResourceManager;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.widgets.Button;
+package edu.mango.activityonnode;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Color;
 
 public class GUI {
 
-	protected Shell shell;
+	private JFrame frame;
+	private JTable activityTable;
 
 	/**
 	 * Launch the application.
-	 * @param args
 	 */
 	public static void main(String[] args) {
-		try {
-			GUI window = new GUI();
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Open the window.
-	 */
-	public void open() {
-		Display display = Display.getDefault();
-		createContents();
-		shell.open();
-		shell.layout();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch()) {
-				display.sleep();
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GUI window = new GUI();
+					window.frame.setVisible(true);
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		}
+		});
 	}
 
 	/**
-	 * Create contents of the window.
+	 * Create the application.
 	 */
-	protected void createContents() {
-		shell = new Shell();
-		shell.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		shell.setSize(600, 450);
-		shell.setText("GUI Mock Up");
-		
-		Label lblNewLabel = new Label(shell, SWT.NONE);
-		lblNewLabel.setFont(SWTResourceManager.getFont(".SF NS Text", 16, SWT.NORMAL));
-		lblNewLabel.setAlignment(SWT.CENTER);
-		lblNewLabel.setBounds(206, 6, 165, 32);
-		lblNewLabel.setText("Project Name");
-		
-		Label lblActi = new Label(shell, SWT.NONE);
-		lblActi.setFont(SWTResourceManager.getFont(".SF NS Text", 13, SWT.NORMAL));
-		lblActi.setText("Activity");
-		lblActi.setBounds(21, 44, 56, 25);
-		
-		Label lblDuration = new Label(shell, SWT.NONE);
-		lblDuration.setText("Duration");
-		lblDuration.setFont(SWTResourceManager.getFont(".SF NS Text", 13, SWT.NORMAL));
-		lblDuration.setBounds(83, 44, 61, 25);
-		
-		Label lblSlackTime = new Label(shell, SWT.NONE);
-		lblSlackTime.setText("Slack Time");
-		lblSlackTime.setFont(SWTResourceManager.getFont(".SF NS Text", 13, SWT.NORMAL));
-		lblSlackTime.setBounds(151, 44, 71, 25);
-		
-		Label lblEarilerStartTime = new Label(shell, SWT.NONE);
-		lblEarilerStartTime.setText("Eariler Start Time");
-		lblEarilerStartTime.setFont(SWTResourceManager.getFont(".SF NS Text", 13, SWT.NORMAL));
-		lblEarilerStartTime.setBounds(237, 44, 117, 25);
-		
-		Label lblLatestEndTime = new Label(shell, SWT.NONE);
-		lblLatestEndTime.setText("Latest End Time");
-		lblLatestEndTime.setFont(SWTResourceManager.getFont(".SF NS Text", 13, SWT.NORMAL));
-		lblLatestEndTime.setBounds(360, 44, 109, 25);
-		
-		Label lblDependences = new Label(shell, SWT.NONE);
-		lblDependences.setText("Dependencies");
-		lblDependences.setFont(SWTResourceManager.getFont(".SF NS Text", 13, SWT.NORMAL));
-		lblDependences.setBounds(475, 44, 112, 25);
-		
-		List ProjectList = new List(shell, SWT.BORDER);
-		ProjectList.setBounds(10, 75, 577, 251);
-		
-		Button btnAdd = new Button(shell, SWT.NONE);
-		btnAdd.setBounds(20, 332, 94, 28);
-		btnAdd.setText("Add Task");
-		
-		Button btnModifyTask = new Button(shell, SWT.NONE);
-		btnModifyTask.setText("Modify Task");
-		btnModifyTask.setBounds(135, 332, 94, 28);
-		
-		Button btnDeleteTask = new Button(shell, SWT.NONE);
-		btnDeleteTask.setText("Delete Task");
-		btnDeleteTask.setBounds(251, 332, 94, 28);
-		
-		Button btnMoreInfo = new Button(shell, SWT.NONE);
-		btnMoreInfo.setText("More Info");
-		btnMoreInfo.setBounds(375, 332, 94, 28);
-		
-		Button btnExit = new Button(shell, SWT.NONE);
-		btnExit.setText("Exit");
-		btnExit.setBounds(493, 332, 94, 28);
+	public GUI() {
+		initialize();
+	}
 
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 550, 400);
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+
+		JPanel titlePanel = new JPanel();
+		titlePanel.setBackground(new Color(255, 255, 255));
+		frame.getContentPane().add(titlePanel, BorderLayout.NORTH);
+		titlePanel.setLayout(null);
+
+		JPanel activityTablePanel = new JPanel();
+		frame.getContentPane().add(activityTablePanel, BorderLayout.CENTER);
+		activityTablePanel.setLayout(new BorderLayout(0, 0));
+
+		JPanel optionsPanel = new JPanel();
+		optionsPanel.setBackground(new Color(255, 255, 255));
+		frame.getContentPane().add(optionsPanel, BorderLayout.SOUTH);
+		optionsPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
+
+		String columnNames[] = { "Activity", "Duration", "EST", "EET", "LST", "LET", "Slack Time",
+				"Preceding Activities" };
+		DefaultTableModel tableModel = new DefaultTableModel(null, columnNames) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+		activityTable = new JTable(tableModel);
+		activityTable.setBackground(new Color(255, 255, 255));
+		((DefaultTableCellRenderer) activityTable.getTableHeader().getDefaultRenderer())
+				.setHorizontalAlignment(JLabel.LEFT);
+		JScrollPane tableContainer = new JScrollPane(activityTable);
+		activityTablePanel.add(tableContainer, BorderLayout.CENTER);
+
+		for (int count = 1; count <= 22; count++) {
+			tableModel.addRow(new Object[] { "data", "data", "data", "data", "data", "data", "data", "data" });
+		}
+		
+		JLabel lblNewLabel = new JLabel("Project Title");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblNewLabel.setBounds(21, 11, 458, 28);
+		titlePanel.add(lblNewLabel);
+
+		// borders for activity panel
+		JPanel BorderLeft = new JPanel();
+		BorderLeft.setBackground(new Color(255, 255, 255));
+		@SuppressWarnings("unused")
+		FlowLayout flowLayout_1 = (FlowLayout) BorderLeft.getLayout();
+		activityTablePanel.add(BorderLeft, BorderLayout.WEST);
+		JPanel BorderRight = new JPanel();
+		BorderRight.setBackground(new Color(255, 255, 255));
+		@SuppressWarnings("unused")
+		FlowLayout flowLayout = (FlowLayout) BorderRight.getLayout();
+		activityTablePanel.add(BorderRight, BorderLayout.EAST);
+
+		// set dimensions for the three main panels
+		titlePanel.setPreferredSize(new Dimension(activityTablePanel.getWidth(), 50));
+		activityTablePanel.setPreferredSize(new Dimension(activityTablePanel.getWidth(), frame.getHeight() - 100));
+		optionsPanel.setPreferredSize(new Dimension(optionsPanel.getWidth(), 50));
+
+		JButton addBtn = new JButton("Add Activity");
+		addBtn.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				JTextField field1 = new JTextField();
+				JTextField field2 = new JTextField();
+				JTextField field3 = new JTextField();
+				JPanel dialog = new JPanel(new GridLayout(0, 1));
+				dialog.add(new JLabel("Name:"));
+				dialog.add(field1);
+				dialog.add(new JLabel("Duration:"));
+				dialog.add(field2);
+				dialog.add(new JLabel("Preceding activities:"));
+				dialog.add(field3);
+
+				int result = JOptionPane.showConfirmDialog(null, dialog, "Add a new activity",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				if (result == JOptionPane.OK_OPTION) {
+					System.out.println(field1.getText() + " " + field2.getText() + " " + field3.getText() + " ");
+				}
+			}
+		});
+		optionsPanel.add(addBtn);
+
+		JButton modifyBtn = new JButton("Modify Activity");
+		modifyBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String[] activityChoices = { "A", "B", "C", "D", "E" };
+				JComboBox<String> combo = new JComboBox<>(activityChoices);
+				JTextField field1 = new JTextField();
+				JTextField field2 = new JTextField();
+				JTextField field3 = new JTextField();
+				JPanel dialog = new JPanel(new GridLayout(0, 1));
+				dialog.add(new JLabel("Activity to modify:"));
+				dialog.add(combo);
+				dialog.add(new JLabel("Name:"));
+				dialog.add(field1);
+				dialog.add(new JLabel("Duration:"));
+				dialog.add(field2);
+				dialog.add(new JLabel("Preceding activities:"));
+				dialog.add(field3);
+
+				int result = JOptionPane.showConfirmDialog(null, dialog, "Modify an activity",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				if (result == JOptionPane.OK_OPTION) {
+					System.out.println(field1.getText() + " " + field2.getText() + " " + field3.getText() + " "
+							+ combo.getSelectedItem());
+				}
+			}
+		});
+		optionsPanel.add(modifyBtn);
+
+		JButton deleteBtn = new JButton("Delete Activity");
+		deleteBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String[] activityChoices = { "A", "B", "C", "D", "E" };
+				JComboBox<String> combo = new JComboBox<>(activityChoices);
+				JPanel dialog = new JPanel(new GridLayout(0, 1));
+				dialog.add(new JLabel("Select an activity to delete:"));
+				dialog.add(combo);
+				
+				int result = JOptionPane.showConfirmDialog(null, dialog, "Delete an activity",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+				if (result == JOptionPane.OK_OPTION) {
+					System.out.println(combo.getSelectedItem());
+				}
+			}
+		});
+		optionsPanel.add(deleteBtn);
+
+		JButton infoBtn = new JButton("More Info");
+		infoBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JPanel dialog = new JPanel(new GridLayout(0, 1));
+				dialog.add(new JLabel("Critical Path:"));
+				dialog.add(new JLabel("Topological sort:"));
+				
+				JOptionPane.showConfirmDialog(null, dialog, "Additional Info",
+						 JOptionPane.PLAIN_MESSAGE);
+			}
+		});
+		optionsPanel.add(infoBtn);
+
+		JButton exitBtn = new JButton("Exit");
+		exitBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frame.dispose();
+			}
+		});
+		optionsPanel.add(exitBtn);
 	}
 }
