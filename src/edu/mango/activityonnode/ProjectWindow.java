@@ -16,6 +16,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 
 import java.awt.Font;
@@ -34,7 +35,9 @@ import java.util.Set;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Component;
 
+@SuppressWarnings("serial")
 public class ProjectWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -77,11 +80,11 @@ public class ProjectWindow extends JFrame {
 
 		rerenderActivityTable();
 	}
-	
+
 	private void rerenderActivityTable() {
 		// reset JTable
 		((DefaultTableModel) activityTable.getModel()).setRowCount(0);
-		
+
 		for (ActivityNode node : project.getActivities()) {
 			Set<ActivityNode> nodeSet = project.getActivities();
 			StringBuilder predecessors = new StringBuilder("");
@@ -100,7 +103,7 @@ public class ProjectWindow extends JFrame {
 	 * Initialize the contents of the
 	 */
 	private void initialize() {
-		setBounds(100, 100, 620, 400);
+		setBounds(100, 100, 660, 400);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
@@ -122,23 +125,18 @@ public class ProjectWindow extends JFrame {
 		String columnNames[] = { "ID", "Activity", "Duration", "EST", "EFT", "LST", "LFT", "Slack Time",
 				"Preceding Activity IDs" };
 		DefaultTableModel tableModel = new DefaultTableModel(null, columnNames) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
 
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
-
+		
 		activityTable = new JTable(tableModel);
 		activityTable.setBackground(new Color(255, 255, 255));
 		((DefaultTableCellRenderer) activityTable.getTableHeader().getDefaultRenderer())
 				.setHorizontalAlignment(JLabel.LEFT);
 		JScrollPane tableContainer = new JScrollPane(activityTable);
-
 		activityTablePanel.add(tableContainer, BorderLayout.CENTER);
 
 		activityTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -151,7 +149,11 @@ public class ProjectWindow extends JFrame {
 		activityTable.getColumnModel().getColumn(6).setPreferredWidth(60);
 		activityTable.getColumnModel().getColumn(7).setPreferredWidth(80);
 		activityTable.getColumnModel().getColumn(8).setPreferredWidth(145);
-
+		activityTable.setShowVerticalLines(false);
+		activityTable.setShowHorizontalLines(false);
+		activityTable.setDefaultRenderer(Object.class, new StripedRowRenderer());
+		activityTable.setDefaultRenderer(Boolean.class, new StripedRowRenderer());
+		
 		JLabel lblNewLabel = new JLabel(project.getName());
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblNewLabel.setBounds(21, 11, 458, 28);
@@ -174,7 +176,7 @@ public class ProjectWindow extends JFrame {
 
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new SaveButtonListener());
-		
+
 		btnSave.setBounds(562, 11, 72, 23);
 		titlePanel.add(btnSave);
 		activityTablePanel.setPreferredSize(new Dimension(activityTablePanel.getWidth(), getHeight() - 100));
@@ -388,39 +390,40 @@ public class ProjectWindow extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		    FileFilter fileFilter = new FileFilter() {
-		        @Override
-		        public boolean accept(File f) {
-		          if (f.isDirectory()) {
-		            return true;
-		          }
+			FileFilter fileFilter = new FileFilter() {
+				@Override
+				public boolean accept(File f) {
+					if (f.isDirectory()) {
+						return true;
+					}
 
-		          String fileName = f.getName().toLowerCase();
-		          if (fileName.endsWith(".project")) {
-		            return true;
-		          }
-		          return false; 
-		        }
+					String fileName = f.getName().toLowerCase();
+					if (fileName.endsWith(".project")) {
+						return true;
+					}
+					return false;
+				}
 
-		        @Override
-		        public String getDescription() {
-		          return "Project File (*.project)";
-		        }
-		      };
-		      
-			JFileChooser fileChooser  = new JFileChooser();
-		    fileChooser.setFileFilter(fileFilter);
-		    
-		    int returnValue = fileChooser.showSaveDialog(null);
+				@Override
+				public String getDescription() {
+					return "Project File (*.project)";
+				}
+			};
 
-		    if (returnValue == JFileChooser.APPROVE_OPTION) {
-		      File selectedFile = fileChooser.getSelectedFile();
-		      saveFile(selectedFile);
-		    }
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setFileFilter(fileFilter);
+
+			int returnValue = fileChooser.showSaveDialog(null);
+
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				File selectedFile = fileChooser.getSelectedFile();
+				saveFile(selectedFile);
+			}
 		}
-		
+
 		/**
 		 * Saves the current project to a file
+		 * 
 		 * @param file The file to save this project to
 		 */
 		private void saveFile(File file) {
@@ -430,13 +433,38 @@ public class ProjectWindow extends JFrame {
 				e.printStackTrace();
 			}
 		}
-		
+
 		// https://stackoverflow.com/questions/10654236/java-save-object-data-to-a-file
-		public void serializeDataOut(Project project, File f)throws IOException{
-		    FileOutputStream fos = new FileOutputStream(f + ".project");
-		    ObjectOutputStream oos = new ObjectOutputStream(fos);
-		    oos.writeObject(project);
-		    oos.close();
+		public void serializeDataOut(Project project, File f) throws IOException {
+			FileOutputStream fos = new FileOutputStream(f + ".project");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(project);
+			oos.close();
 		}
+	}
+	
+	public class StripedRowRenderer extends DefaultTableCellRenderer {
+		private final Color STRIPE = new Color(249, 249, 249);
+		private final Color WHITE = UIManager.getColor("Table.background");
+
+		public StripedRowRenderer() {
+			setOpaque(true);
+		}
+
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			JComponent c = (JComponent) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row,
+					column);
+
+			if (!isSelected) {
+				if (row % 2 == 0) {
+					c.setBackground(WHITE);
+				} else {
+					c.setBackground(STRIPE);
+				}
+			}
+			return c;
+		}
+
 	}
 }

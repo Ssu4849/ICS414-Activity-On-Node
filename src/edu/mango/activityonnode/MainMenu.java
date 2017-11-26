@@ -159,7 +159,6 @@ public class MainMenu {
 			try {
 				project = (Project) ois.readObject();
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			ois.close();
