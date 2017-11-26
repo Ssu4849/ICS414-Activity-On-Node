@@ -1,6 +1,7 @@
 package edu.mango.activityonnode;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -12,7 +13,9 @@ import java.util.Set;
  * The Project is a representation of all activities that make up an activity-on-node-network.
  * @author Team Mango
  */
-public class Project {
+public class Project implements Serializable{
+
+	private static final long serialVersionUID = 1L;
 
 	private static final AtomicInteger counter = new AtomicInteger();
 
