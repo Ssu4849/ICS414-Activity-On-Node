@@ -1,6 +1,7 @@
 package edu.mango.activityonnode;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,8 +9,10 @@ import java.util.Set;
  * The ActivityNode is a representation of one activity/task in an activity-on-node network.
  * @author Team Mango
  */
-public class ActivityNode {
+public class ActivityNode implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	private static final AtomicInteger counter = new AtomicInteger();
 
 	/** Number that uniquely identifies the activity. */
