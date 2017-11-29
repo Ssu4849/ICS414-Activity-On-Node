@@ -202,11 +202,12 @@ public class ProjectWindow extends JFrame {
 						JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 				if (result == JOptionPane.OK_OPTION) {
 					System.out.println(field1.getText() + " " + field2.getText() + " " + field3.getText() + " ");
-
 					if (field1.getText().trim().isEmpty()) {
 						JOptionPane.showMessageDialog(null, "You must enter a name for this activity.");
 					} else if (field2.getText().trim().isEmpty()) {
 						JOptionPane.showMessageDialog(null, "You must enter a duration for this activity.");
+					} else if(field2.getText().trim().contains("-")){
+						JOptionPane.showMessageDialog(null, "Duration can not be negative.");	
 					} else {
 						String name = field1.getText().trim();
 						try {
