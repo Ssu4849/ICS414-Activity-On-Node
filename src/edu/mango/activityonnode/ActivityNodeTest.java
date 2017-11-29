@@ -146,6 +146,6 @@ public class ActivityNodeTest {
     @Test
     public void testGetId(){
     	ActivityNode node = new ActivityNode("Node 1", 1);
-    	assertNull(node.getId());
+    	assertNotNull(node.getId());
     }
 }
