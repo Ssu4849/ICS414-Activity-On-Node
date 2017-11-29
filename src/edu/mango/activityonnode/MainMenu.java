@@ -130,7 +130,10 @@ public class MainMenu {
 				currentProject = parseFile(selectedFile);
 				ProjectWindow window = new ProjectWindow(currentProject);
 				window.setVisible(true);
+			
 			}
+			frame.setVisible(false);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		}
 
 		/**
