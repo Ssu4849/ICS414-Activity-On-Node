@@ -223,6 +223,7 @@ public class ProjectWindow extends JFrame {
 									} catch (NumberFormatException ex) {
 										JOptionPane.showMessageDialog(null,
 												"Preceding activity " + "'" + ID + "' is not a valid ID.");
+										project.addActivity(null);
 									}
 								}
 								for (ActivityNode an : project.getActivities()) {
