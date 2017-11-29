@@ -131,6 +131,8 @@ public class MainMenu {
 				ProjectWindow window = new ProjectWindow(currentProject);
 				window.setVisible(true);
 			}
+			frame.setVisible(false);
+
 		}
 
 		/**
