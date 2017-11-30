@@ -234,4 +234,12 @@ public class ActivityNode implements Serializable{
 	public int getId() {
 		return id;
 	}
+
+	/**
+	 * Sets the new starting ID.
+	 * @param counter - the new starting ID
+	 */
+	public static void setStartingId(int counter) {
+		ActivityNode.counter.set(counter);
+	}
 }

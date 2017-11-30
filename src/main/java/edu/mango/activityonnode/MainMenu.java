@@ -128,6 +128,7 @@ public class MainMenu {
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
 				File selectedFile = fileChooser.getSelectedFile();
 				currentProject = parseFile(selectedFile);
+				ActivityNode.setStartingId(getLargestId(currentProject) + 2);
 				ProjectWindow window = new ProjectWindow(currentProject);
 				window.setVisible(true);
 			}
@@ -165,6 +166,19 @@ public class MainMenu {
 			}
 			ois.close();
 			return project;
+		}
+
+		/**
+		 * Gets the largest activity ID from a loaded project.
+		 * @param project - the project that was loaded
+		 * @return the largest activity ID
+		 */
+		private int getLargestId(Project project) {
+			int id = 0;
+			for (ActivityNode a : project.getActivities()) {
+				if (a.getId() > id) id = a.getId();
+			}
+			return id;
 		}
 	}
 }
