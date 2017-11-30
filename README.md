@@ -8,10 +8,10 @@
 2. Move into the cloned folder using `cd ICS414-Activity-On-Node`
 3. Install the dependencies using:
    * UNIX/macOS: `./mvnw install`
-   * Windows: `./mvnw.cmd install`
+   * Windows: `mvnw install`
 4. Run the application's GUI using:
    * UNIX/macOS: `./mvnw exec:java@gui`
-   * Windows: `./mvnw.cmd exec:java@gui`
+   * Windows: `mvnw exec:java@gui`
 5. Alternatively, you can run the application's CLI using:
    * UNIX/macOS: `./mvnw exec:java@cli`
-   * Windows: `./mvnw.cmd exec:java@cli`
+   * Windows: `mvnw exec:java@cli`
